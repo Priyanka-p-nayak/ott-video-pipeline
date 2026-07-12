@@ -23,3 +23,13 @@ THUMBNAIL_TIMESTAMP_SECONDS = 5
 
 # File used to persist job status (temporary solution before PostgreSQL in Week 3)
 JOB_STATUS_FILE = 'job_status.json'
+
+# Kafka connection settings
+KAFKA_BOOTSTRAP_SERVERS = 'localhost:9092'
+KAFKA_TOPIC_VIEWER_EVENTS = 'viewer-events'
+
+# Allowed viewer event types for analytics tracking
+ALLOWED_EVENT_TYPES = {'play', 'pause', 'buffer', 'complete', 'seek'}
+
+# PostgreSQL connection settings
+DATABASE_URL = 'postgresql://ott_user:ott_password@localhost:5433/ott_pipeline'
