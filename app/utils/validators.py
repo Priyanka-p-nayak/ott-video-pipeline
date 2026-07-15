@@ -59,3 +59,28 @@ def check_content_length(request_obj, max_size):
         return False, f'File too large. Maximum allowed size is {max_size // (1024*1024)}MB'
 
     return True, None
+
+from app.config import ALLOWED_EVENT_TYPES
+
+
+def validate_analytics_event(json_data) -> tuple[bool, str]:
+    """
+    Validate an incoming analytics event payload.
+    Returns (is_valid: bool, error_message: str or None).
+    """
+    if json_data is None:
+        return False, 'Request body must be valid JSON'
+
+    if 'video_id' not in json_data:
+        return False, 'Missing required field: video_id'
+
+    if 'event' not in json_data:
+        return False, 'Missing required field: event'
+
+    if not isinstance(json_data['video_id'], str) or json_data['video_id'].strip() == '':
+        return False, 'video_id must be a non-empty string'
+
+    if json_data['event'] not in ALLOWED_EVENT_TYPES:
+        return False, f"event must be one of: {', '.join(ALLOWED_EVENT_TYPES)}"
+
+    return True, None
