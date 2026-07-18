@@ -20,10 +20,11 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
 
   postgres:
     image: postgres:15
@@ -36,6 +37,33 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: flask_app
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - "5000:5000"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      DATABASE_URL: postgresql://ott_user:ott_password@postgres:5432/ott_pipeline
+    volumes:
+      - ./uploads:/app/uploads
+      - ./outputs:/app/outputs
+      - ./thumbnails:/app/thumbnails
+
+  consumer:
+    build: .
+    container_name: kafka_consumer
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      DATABASE_URL: postgresql://ott_user:ott_password@postgres:5432/ott_pipeline
+    command: ["python", "-m", "app.analytics.consumer"]
 
 volumes:
   postgres_data:
