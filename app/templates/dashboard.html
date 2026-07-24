@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTT Analytics Dashboard</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Our custom CSS -->
+    <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-dark px-4">
+        <span class="navbar-brand mb-0 h1">
+            <i class="bi bi-play-circle-fill me-2"></i>OTT Pipeline Dashboard
+        </span>
+    </nav>
+
+    <div class="d-flex">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar p-3">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <i class="bi bi-speedometer2 me-2"></i>Overview
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-collection-play me-2"></i>Videos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-graph-up me-2"></i>Analytics
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content p-4 flex-grow-1">
+            <h3 class="mb-4">Overview</h3>
+
+            <!-- STAT CARDS ROW -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <i class="bi bi-collection-play stat-icon"></i>
+                            <h6 class="text-muted">Total Videos</h6>
+                            <h2 id="total-videos">--</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <i class="bi bi-eye-fill stat-icon"></i>
+                            <h6 class="text-muted">Total Views</h6>
+                            <h2 id="total-views">--</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <i class="bi bi-clock-fill stat-icon"></i>
+                            <h6 class="text-muted">Avg Watch Time</h6>
+                            <h2 id="avg-watch-time">--</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stat-card">
+                        <div class="card-body">
+                            <i class="bi bi-people-fill stat-icon"></i>
+                            <h6 class="text-muted">Concurrent Viewers</h6>
+                            <h2 id="concurrent-viewers">--</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHART PLACEHOLDER -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="mb-3">Views Over Time</h5>
+                            <canvas id="viewsChart" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="mb-3">Event Breakdown</h5>
+                            <canvas id="eventChart" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIDEO LIST WITH PROGRESS BARS -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-3">Recent Uploads</h5>
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Job ID</th>
+                                <th>Status</th>
+                                <th>Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody id="video-list-body">
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+</html>
