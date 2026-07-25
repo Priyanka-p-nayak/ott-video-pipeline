@@ -57,3 +57,7 @@ def get_status(job_id: str) -> dict:
         all_statuses = _read_all_statuses()
         return all_statuses.get(job_id)
     
+def get_all_statuses() -> dict:
+    """Return the full status dictionary for all known jobs."""
+    with _file_lock:
+        return _read_all_statuses()
