@@ -1,0 +1,6 @@
+@"
+[flake8]
+max-line-length = 100
+exclude = venv,__pycache__,.git,outputs,uploads,thumbnails,logs
+ignore = E203, W503
+"@ | Out-File -FilePath .flake8 -Encoding utf8
